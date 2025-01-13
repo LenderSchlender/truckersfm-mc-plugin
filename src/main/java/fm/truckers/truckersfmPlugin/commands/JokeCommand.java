@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 public class JokeCommand extends AbstractCommand {
     public void register() {
         new CommandAPICommand("joke")
-                .withAliases("submit-joke", "submit-joke", "tell-joke")
+                .withAliases("submit-joke", "tell-joke")
                 .withFullDescription("Send in a funny joke to TruckersFM.")
                 .withArguments(new dev.jorel.commandapi.arguments.GreedyStringArgument("message"))
                 .executesPlayer(this::handleCommand)
