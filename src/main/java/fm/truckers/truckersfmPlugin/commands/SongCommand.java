@@ -18,6 +18,7 @@ public class SongCommand extends AbstractCommand {
     @Override
     public void register() {
         new CommandAPICommand("song")
+                .withAliases("current-song", "now-playing")
                 .withFullDescription("The current song playing on TruckersFM.")
                 .executesPlayer(this::handleCommand)
                 .register();

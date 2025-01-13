@@ -15,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 public class ShoutoutCommand extends AbstractCommand {
     public void register() {
         new CommandAPICommand("shoutout")
+                .withAliases("shout-out", "submit-shoutout")
                 .withFullDescription("Send in a shout-out to TruckersFM.")
                 .withArguments(new dev.jorel.commandapi.arguments.GreedyStringArgument("message"))
                 .executesPlayer(this::handleCommand)
@@ -46,7 +47,7 @@ public class ShoutoutCommand extends AbstractCommand {
                     return;
                 }
 
-                player.sendMessage(Component.text("Your request has been sent successfully!"));
+                player.sendMessage(Component.text("Your shout-out has been sent successfully!"));
             } catch (Exception e) {
                 player.sendMessage(Component.text("An error occurred: " + e.getMessage()));
             }

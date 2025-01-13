@@ -15,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 public class RequestCommand extends AbstractCommand {
     public void register() {
         new CommandAPICommand("request")
+                .withAliases("submit-request", "submit-song", "song-request")
                 .withFullDescription("Request a song to be played on TruckersFM. Does not work with AutoDJ.")
                 .withArguments(new dev.jorel.commandapi.arguments.GreedyStringArgument("message"))
                 .executesPlayer(this::handleCommand)

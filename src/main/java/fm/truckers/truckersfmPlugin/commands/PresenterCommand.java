@@ -19,6 +19,7 @@ import fm.truckers.truckersfmPlugin.helpers.TimeConverter;
 public class PresenterCommand extends AbstractCommand {
     public void register() {
         new CommandAPICommand("presenter")
+                .withAliases("dj", "live")
                 .withFullDescription("The current live presenter on TruckersFM, and the next upcoming presenter.")
                 .executesPlayer(this::handleCommand)
                 .register();
