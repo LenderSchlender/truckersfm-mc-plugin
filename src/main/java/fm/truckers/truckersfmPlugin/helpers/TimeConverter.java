@@ -1,4 +1,4 @@
-package fm.truckers.truckersfmPlugin;
+package fm.truckers.truckersfmPlugin.helpers;
 
 import java.time.Instant;
 import java.time.ZoneId;
