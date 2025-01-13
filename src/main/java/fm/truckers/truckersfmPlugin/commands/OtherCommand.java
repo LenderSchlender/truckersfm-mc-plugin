@@ -12,11 +12,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
-public class ShoutoutCommand extends AbstractCommand {
+public class OtherCommand extends AbstractCommand {
     public void register() {
-        new CommandAPICommand("shoutout")
-                .withAliases("submit-shoutout")
-                .withFullDescription("Send in a shout-out to TruckersFM.")
+        new CommandAPICommand("other")
+                .withAliases("submit-other")
+                .withFullDescription("Submit something else to the TruckersFM presenter.")
                 .withArguments(new dev.jorel.commandapi.arguments.GreedyStringArgument("message"))
                 .executesPlayer(this::handleCommand)
                 .register();
@@ -32,7 +32,7 @@ public class ShoutoutCommand extends AbstractCommand {
                 .POST(HttpRequest.BodyPublishers.ofString(
                         "name=" + player.getName() +
                                 "&message=" + message.replace(" ", "%20") +
-                                "&message_type=" + MessageType.Shoutout +
+                                "&message_type=" + MessageType.Other +
                                 "&identifier=" + player.getUniqueId() +
                                 "&platform=Minecraft plugin"
                 ))
@@ -47,7 +47,7 @@ public class ShoutoutCommand extends AbstractCommand {
                     return;
                 }
 
-                player.sendMessage(Component.text("Your shout-out has been sent successfully!"));
+                player.sendMessage(Component.text("Your submission has been sent successfully!"));
             } catch (Exception e) {
                 player.sendMessage(Component.text("An error occurred"));
 

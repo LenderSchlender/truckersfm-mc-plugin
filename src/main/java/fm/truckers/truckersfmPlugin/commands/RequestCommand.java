@@ -49,7 +49,9 @@ public class RequestCommand extends AbstractCommand {
 
                 player.sendMessage(Component.text("Your request has been sent successfully!"));
             } catch (Exception e) {
-                player.sendMessage(Component.text("An error occurred: " + e.getMessage()));
+                player.sendMessage(Component.text("An error occurred"));
+
+                e.printStackTrace();
             }
         });
     }

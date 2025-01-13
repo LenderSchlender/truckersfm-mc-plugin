@@ -1,9 +1,6 @@
 package fm.truckers.truckersfmPlugin;
 
-import fm.truckers.truckersfmPlugin.commands.PresenterCommand;
-import fm.truckers.truckersfmPlugin.commands.RequestCommand;
-import fm.truckers.truckersfmPlugin.commands.ShoutoutCommand;
-import fm.truckers.truckersfmPlugin.commands.SongCommand;
+import fm.truckers.truckersfmPlugin.commands.*;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,5 +17,11 @@ public final class TruckersfmPlugin extends JavaPlugin implements Listener {
         new RequestCommand().register();
 
         new ShoutoutCommand().register();
+
+        new CompetitionCommand().register();
+
+        new JokeCommand().register();
+
+        new OtherCommand().register();
     }
 }

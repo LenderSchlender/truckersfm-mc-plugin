@@ -1,12 +1,29 @@
 package fm.truckers.truckersfmPlugin.helpers;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 public class JsonValueParser {
     public static String parse(String json, String path) {
         String[] keys = path.split("\\.");
-        var element = com.google.gson.JsonParser.parseString(json).getAsJsonObject();
+        JsonElement element = JsonParser.parseString(json);
+
         for (String key : keys) {
-            element = element.getAsJsonObject(key);
+            if (element.isJsonObject()) {
+                element = element.getAsJsonObject().get(key);
+            } else {
+                throw new IllegalArgumentException("Invalid JSON path: '" + path + "'. Key '" + key + "' does not point to an object.");
+            }
         }
-        return element.getAsString();
+
+        if (element == null || element.isJsonNull()) {
+            return null;
+        }
+
+        if (element.isJsonPrimitive()) {
+            return element.getAsString();
+        } else {
+            throw new IllegalArgumentException("Expected primitive value at the end of path: '" + path + "', but found: " + element);
+        }
     }
 }

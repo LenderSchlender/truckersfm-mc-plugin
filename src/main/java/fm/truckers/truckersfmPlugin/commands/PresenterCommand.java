@@ -69,16 +69,20 @@ public class PresenterCommand extends AbstractCommand {
                 String upcomingPresenterName = JsonValueParser.parse(upcomingResponse.body(), "data.user.name");
                 String upcomingPresenterDescription = JsonValueParser.parse(upcomingResponse.body(), "data.description");
                 long upcomingPresenterStart = Long.parseLong(JsonValueParser.parse(upcomingResponse.body(), "data.start"));
+                long upcomingPresenterEnd = Long.parseLong(JsonValueParser.parse(upcomingResponse.body(), "data.end"));
 
                 TextComponent upcomingPresenterText = Component.text("Next up: ")
                         .append(Component.text(upcomingPresenterName).decoration(TextDecoration.BOLD, true))
                         .append(Component.text(" - "))
                         .append(Component.text(upcomingPresenterDescription).decoration(TextDecoration.ITALIC, true))
-                        .append(Component.text(" at " + TimeConverter.convertTimestampToTime(upcomingPresenterStart)));
+                        .append(Component.text(" from " + TimeConverter.convertTimestampToTime(upcomingPresenterStart)))
+                        .append(Component.text(" until " + TimeConverter.convertTimestampToTime(upcomingPresenterEnd)));
 
                 player.sendMessage(upcomingPresenterText);
             } catch (Exception e) {
-                player.sendMessage(Component.text("An error occurred: " + e.getMessage()));
+                player.sendMessage(Component.text("An error occurred"));
+
+                e.printStackTrace();
             }
         });
     }

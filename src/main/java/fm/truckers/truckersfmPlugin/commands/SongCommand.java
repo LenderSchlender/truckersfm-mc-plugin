@@ -79,7 +79,9 @@ public class SongCommand extends AbstractCommand {
 
                 player.sendMessage(songText);
             } catch (Exception e) {
-                player.sendMessage(Component.text("An error occurred: " + e.getMessage()));
+                player.sendMessage(Component.text("An error occurred"));
+
+                e.printStackTrace();
             }
         });
     }
