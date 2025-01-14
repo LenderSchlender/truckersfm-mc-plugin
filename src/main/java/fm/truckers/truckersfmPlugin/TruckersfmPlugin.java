@@ -32,6 +32,11 @@ public final class TruckersfmPlugin extends JavaPlugin implements Listener {
         new JokeCommand().register();
 
         new OtherCommand().register();
+
+        EnableScoreboardCommand enableScoreboardCommand = new EnableScoreboardCommand(this);
+        enableScoreboardCommand.register();
+
+        new DisableScoreboardCommand(enableScoreboardCommand.getTrackedPlayers()).register();
     }
 
     @Override
