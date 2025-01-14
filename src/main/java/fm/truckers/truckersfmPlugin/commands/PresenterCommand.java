@@ -2,6 +2,8 @@ package fm.truckers.truckersfmPlugin.commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.executors.CommandArguments;
+import fm.truckers.truckersfmPlugin.TruckersfmPlugin;
+import fm.truckers.truckersfmPlugin.helpers.ErrorLogger;
 import fm.truckers.truckersfmPlugin.helpers.JsonValueParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -18,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 import fm.truckers.truckersfmPlugin.helpers.TimeConverter;
 
 public class PresenterCommand extends AbstractCommand {
-    public void register() {
+    public void register(TruckersfmPlugin plugin) {
         new CommandAPICommand("presenter")
                 .withAliases("dj", "live")
                 .withFullDescription("The current live presenter on TruckersFM, and the next upcoming presenter.")
@@ -92,9 +94,7 @@ public class PresenterCommand extends AbstractCommand {
 
                 player.sendMessage(upcomingPresenterText);
             } catch (Exception e) {
-                player.sendMessage(Component.text("An error occurred", NamedTextColor.RED));
-
-                e.printStackTrace();
+                ErrorLogger.log(plugin, player, e);
             }
         });
     }

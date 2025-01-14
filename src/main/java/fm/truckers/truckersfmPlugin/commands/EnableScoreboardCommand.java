@@ -3,6 +3,7 @@ package fm.truckers.truckersfmPlugin.commands;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.executors.CommandArguments;
 import fm.truckers.truckersfmPlugin.TruckersfmPlugin;
+import fm.truckers.truckersfmPlugin.helpers.ErrorLogger;
 import fm.truckers.truckersfmPlugin.helpers.JsonValueParser;
 import fm.truckers.truckersfmPlugin.helpers.TimeConverter;
 import net.kyori.adventure.text.Component;
@@ -23,14 +24,10 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public final class EnableScoreboardCommand extends AbstractCommand {
-    private final TruckersfmPlugin plugin;
     private final Set<Player> trackedPlayers = new HashSet<>();
 
-    public EnableScoreboardCommand(TruckersfmPlugin plugin) {
+    public void register(TruckersfmPlugin plugin) {
         this.plugin = plugin;
-    }
-
-    public void register() {
         new CommandAPICommand("enable-scoreboard")
                 .withFullDescription("Display the current song and presenter on the side of your screen")
                 .executesPlayer(this::handleCommand)
@@ -94,8 +91,7 @@ public final class EnableScoreboardCommand extends AbstractCommand {
                 // Update scoreboard
                 Bukkit.getScheduler().runTask(plugin, () -> updateScoreboard(player, artist, title, presenterName, presenterDescription, presenterEnd));
             } catch (Exception e) {
-                player.sendMessage(Component.text("An error occurred while fetching data."));
-                e.printStackTrace();
+                ErrorLogger.log(plugin, player, e);
             }
         });
     }

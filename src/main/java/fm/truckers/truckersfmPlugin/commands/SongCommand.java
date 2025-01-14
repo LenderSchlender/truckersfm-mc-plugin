@@ -2,6 +2,8 @@ package fm.truckers.truckersfmPlugin.commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.executors.CommandArguments;
+import fm.truckers.truckersfmPlugin.TruckersfmPlugin;
+import fm.truckers.truckersfmPlugin.helpers.ErrorLogger;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -17,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class SongCommand extends AbstractCommand {
     @Override
-    public void register() {
+    public void register(TruckersfmPlugin plugin) {
         new CommandAPICommand("song")
                 .withAliases("current-song", "now-playing")
                 .withFullDescription("The current song playing on TruckersFM.")
@@ -82,9 +84,7 @@ public class SongCommand extends AbstractCommand {
 
                 player.sendMessage(songText);
             } catch (Exception e) {
-                player.sendMessage(Component.text("An error occurred while fetching the song data.", NamedTextColor.RED));
-
-                e.printStackTrace();
+                ErrorLogger.log(plugin, player, e);
             }
         });
     }

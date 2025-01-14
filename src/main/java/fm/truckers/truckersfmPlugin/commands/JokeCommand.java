@@ -2,7 +2,9 @@ package fm.truckers.truckersfmPlugin.commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.executors.CommandArguments;
+import fm.truckers.truckersfmPlugin.TruckersfmPlugin;
 import fm.truckers.truckersfmPlugin.enums.MessageType;
+import fm.truckers.truckersfmPlugin.helpers.ErrorLogger;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
@@ -13,7 +15,7 @@ import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
 public class JokeCommand extends AbstractCommand {
-    public void register() {
+    public void register(TruckersfmPlugin plugin) {
         new CommandAPICommand("joke")
                 .withAliases("submit-joke", "tell-joke")
                 .withFullDescription("Send in a funny joke to TruckersFM.")
@@ -49,9 +51,7 @@ public class JokeCommand extends AbstractCommand {
 
                 player.sendMessage(Component.text("Your joke has been sent successfully!"));
             } catch (Exception e) {
-                player.sendMessage(Component.text("An error occurred"));
-
-                e.printStackTrace();
+                ErrorLogger.log(plugin, player, e);
             }
         });
     }

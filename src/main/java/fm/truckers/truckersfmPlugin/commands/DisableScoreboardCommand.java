@@ -2,6 +2,7 @@ package fm.truckers.truckersfmPlugin.commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.executors.CommandArguments;
+import fm.truckers.truckersfmPlugin.TruckersfmPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -17,7 +18,7 @@ public class DisableScoreboardCommand extends AbstractCommand {
         this.trackedPlayers = trackedPlayers;
     }
 
-    public void register() {
+    public void register(TruckersfmPlugin plugin) {
         new CommandAPICommand("disable-scoreboard")
                 .withFullDescription("Disable the TruckersFM scoreboard")
                 .executesPlayer(this::handleCommand)

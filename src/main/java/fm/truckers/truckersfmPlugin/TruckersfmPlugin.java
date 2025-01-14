@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class TruckersfmPlugin extends JavaPlugin implements Listener {
     @Override
     public void onLoad() {
-        CommandAPI.onLoad(new CommandAPIBukkitConfig(this)); // Load with verbose output
+        CommandAPI.onLoad(new CommandAPIBukkitConfig(this));
     }
 
     @Override
@@ -19,24 +19,25 @@ public final class TruckersfmPlugin extends JavaPlugin implements Listener {
 
         CommandAPI.onEnable();
 
-        new PresenterCommand().register();
+        new PresenterCommand().register(this);
 
-        new SongCommand().register();
+        new SongCommand().register(this);
 
-        new RequestCommand().register();
+        new RequestCommand().register(this);
 
-        new ShoutoutCommand().register();
+        new ShoutoutCommand().register(this);
 
-        new CompetitionCommand().register();
+        new CompetitionCommand().register(this);
 
-        new JokeCommand().register();
+        new JokeCommand().register(this);
 
-        new OtherCommand().register();
+        new OtherCommand().register(this);
 
-        EnableScoreboardCommand enableScoreboardCommand = new EnableScoreboardCommand(this);
-        enableScoreboardCommand.register();
+        EnableScoreboardCommand enableScoreboardCommand = new EnableScoreboardCommand();
+        enableScoreboardCommand.register(this);
 
-        new DisableScoreboardCommand(enableScoreboardCommand.getTrackedPlayers()).register();
+        new DisableScoreboardCommand(enableScoreboardCommand.getTrackedPlayers())
+                .register(this);
     }
 
     @Override
