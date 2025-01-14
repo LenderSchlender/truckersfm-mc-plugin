@@ -5,6 +5,7 @@ import dev.jorel.commandapi.executors.CommandArguments;
 import fm.truckers.truckersfmPlugin.helpers.JsonValueParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
 
@@ -43,7 +44,7 @@ public class PresenterCommand extends AbstractCommand {
                 // Fetch live presenter
                 HttpResponse<String> liveResponse = client.send(livePresenterRequest, HttpResponse.BodyHandlers.ofString());
                 if (liveResponse.statusCode() != 200) {
-                    player.sendMessage(Component.text("Failed to fetch live presenter info. HTTP Status: " + liveResponse.statusCode()));
+                    player.sendMessage(Component.text("Failed to fetch live presenter info. HTTP Status: " + liveResponse.statusCode(), NamedTextColor.RED));
                     return;
                 }
 
@@ -51,18 +52,23 @@ public class PresenterCommand extends AbstractCommand {
                 String livePresenterDescription = JsonValueParser.parse(liveResponse.body(), "data.description");
                 long livePresenterEnd = Long.parseLong(JsonValueParser.parse(liveResponse.body(), "data.end"));
 
-                TextComponent livePresenterText = Component.text("Currently live: ")
-                        .append(Component.text(livePresenterName).decoration(TextDecoration.BOLD, true))
-                        .append(Component.text(" - "))
-                        .append(Component.text(livePresenterDescription).decoration(TextDecoration.ITALIC, true))
-                        .append(Component.text(" until " + TimeConverter.convertTimestampToTime(livePresenterEnd)));
+                TextComponent livePresenterText = Component.text("Currently live: ", NamedTextColor.GOLD)
+                        .append(Component.text(livePresenterName, NamedTextColor.GREEN, TextDecoration.BOLD))
+                        .append(Component.text(" - ", NamedTextColor.GRAY))
+                        .append(Component.text(livePresenterDescription, NamedTextColor.WHITE, TextDecoration.ITALIC));
+
+                if (livePresenterEnd != 0) {
+                    livePresenterText = livePresenterText
+                            .append(Component.text(" until ", NamedTextColor.GRAY))
+                            .append(Component.text(TimeConverter.convertTimestampToTime(livePresenterEnd), NamedTextColor.AQUA));
+                }
 
                 player.sendMessage(livePresenterText);
 
                 // Fetch upcoming presenter
                 HttpResponse<String> upcomingResponse = client.send(upcomingPresenterRequest, HttpResponse.BodyHandlers.ofString());
                 if (upcomingResponse.statusCode() != 200) {
-                    player.sendMessage(Component.text("Failed to fetch upcoming presenter info. HTTP Status: " + upcomingResponse.statusCode()));
+                    player.sendMessage(Component.text("Failed to fetch upcoming presenter info. HTTP Status: " + upcomingResponse.statusCode(), NamedTextColor.RED));
                     return;
                 }
 
@@ -71,16 +77,22 @@ public class PresenterCommand extends AbstractCommand {
                 long upcomingPresenterStart = Long.parseLong(JsonValueParser.parse(upcomingResponse.body(), "data.start"));
                 long upcomingPresenterEnd = Long.parseLong(JsonValueParser.parse(upcomingResponse.body(), "data.end"));
 
-                TextComponent upcomingPresenterText = Component.text("Next up: ")
-                        .append(Component.text(upcomingPresenterName).decoration(TextDecoration.BOLD, true))
-                        .append(Component.text(" - "))
-                        .append(Component.text(upcomingPresenterDescription).decoration(TextDecoration.ITALIC, true))
-                        .append(Component.text(" from " + TimeConverter.convertTimestampToTime(upcomingPresenterStart)))
-                        .append(Component.text(" until " + TimeConverter.convertTimestampToTime(upcomingPresenterEnd)));
+                TextComponent upcomingPresenterText = Component.text("Next up: ", NamedTextColor.GOLD)
+                        .append(Component.text(upcomingPresenterName, NamedTextColor.GREEN, TextDecoration.BOLD))
+                        .append(Component.text(" - ", NamedTextColor.GRAY))
+                        .append(Component.text(upcomingPresenterDescription, NamedTextColor.WHITE, TextDecoration.ITALIC))
+                        .append(Component.text(" from ", NamedTextColor.GRAY))
+                        .append(Component.text(TimeConverter.convertTimestampToTime(upcomingPresenterStart), NamedTextColor.AQUA));
+
+                if (upcomingPresenterEnd != 0) {
+                    upcomingPresenterText = upcomingPresenterText
+                            .append(Component.text(" until ", NamedTextColor.GRAY))
+                            .append(Component.text(TimeConverter.convertTimestampToTime(upcomingPresenterEnd), NamedTextColor.AQUA));
+                }
 
                 player.sendMessage(upcomingPresenterText);
             } catch (Exception e) {
-                player.sendMessage(Component.text("An error occurred"));
+                player.sendMessage(Component.text("An error occurred", NamedTextColor.RED));
 
                 e.printStackTrace();
             }

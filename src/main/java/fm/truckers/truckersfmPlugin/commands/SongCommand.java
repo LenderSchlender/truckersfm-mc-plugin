@@ -5,6 +5,7 @@ import dev.jorel.commandapi.executors.CommandArguments;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
 
@@ -37,7 +38,7 @@ public class SongCommand extends AbstractCommand {
             try {
                 HttpResponse<String> response = client.send(currentSongRequest, HttpResponse.BodyHandlers.ofString());
                 if (response.statusCode() != 200) {
-                    player.sendMessage(Component.text("Failed to fetch current song info. HTTP Status: " + response.statusCode()));
+                    player.sendMessage(Component.text("Failed to fetch current song info. HTTP Status: " + response.statusCode(), NamedTextColor.RED));
                     return;
                 }
 
@@ -70,16 +71,18 @@ public class SongCommand extends AbstractCommand {
                         .get("playcount")
                         .getAsInt();
 
-                TextComponent songText = Component.text("Now Playing: ")
+                TextComponent songText = Component.text("Now Playing: ", NamedTextColor.GOLD)
                         .append(link != null
-                                ? Component.text(artist + " - " + title).clickEvent(ClickEvent.openUrl(link)).decoration(TextDecoration.UNDERLINED, true)
-                                : Component.text(artist + " - " + title))
+                                ? Component.text(artist + " - " + title, NamedTextColor.GREEN, TextDecoration.UNDERLINED)
+                                .clickEvent(ClickEvent.openUrl(link))
+                                : Component.text(artist + " - " + title, NamedTextColor.GREEN))
                         .append(Component.newline())
-                        .append(Component.text("Play Count: " + playCount));
+                        .append(Component.text("Play Count: ", NamedTextColor.AQUA))
+                        .append(Component.text(String.valueOf(playCount), NamedTextColor.WHITE));
 
                 player.sendMessage(songText);
             } catch (Exception e) {
-                player.sendMessage(Component.text("An error occurred"));
+                player.sendMessage(Component.text("An error occurred while fetching the song data.", NamedTextColor.RED));
 
                 e.printStackTrace();
             }
