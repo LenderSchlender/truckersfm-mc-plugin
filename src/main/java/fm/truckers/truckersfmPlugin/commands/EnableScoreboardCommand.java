@@ -5,6 +5,7 @@ import dev.jorel.commandapi.executors.CommandArguments;
 import fm.truckers.truckersfmPlugin.TruckersfmPlugin;
 import fm.truckers.truckersfmPlugin.helpers.ErrorLogger;
 import fm.truckers.truckersfmPlugin.helpers.JsonValueParser;
+import fm.truckers.truckersfmPlugin.helpers.TextUtils;
 import fm.truckers.truckersfmPlugin.helpers.TimeConverter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -20,6 +21,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -104,13 +106,20 @@ public final class EnableScoreboardCommand extends AbstractCommand {
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         objective.getScore("§eNow playing:").setScore(5);
-        objective.getScore("§f" + artist + " - " + title).setScore(4);
-        objective.getScore(" ").setScore(3);
-        objective.getScore("§bPresenter:").setScore(2);
-        objective.getScore("§f" + presenterName + " - " + presenterDescription).setScore(1);
+
+        // Break the artist and title into multiple lines if necessary
+        List<String> songLines = TextUtils.splitTextIntoLines("§f" + artist + " - " + title, 40);
+        int score = 4;
+        for (String line : songLines) {
+            objective.getScore(line).setScore(score--);
+        }
+
+        objective.getScore(" ").setScore(score--);
+        objective.getScore("§bPresenter:").setScore(score--);
+        objective.getScore("§f" + presenterName + " - " + presenterDescription).setScore(score--);
 
         if (presenterEnd != 0) {
-            objective.getScore("§7Until: " + TimeConverter.convertTimestampToTime(presenterEnd)).setScore(0);
+            objective.getScore("§7Until: " + TimeConverter.convertTimestampToTime(presenterEnd)).setScore(score--);
         }
 
         player.setScoreboard(scoreboard);
