@@ -4,15 +4,12 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.executors.CommandArguments;
 import fm.truckers.truckersfmPlugin.TruckersfmPlugin;
 import fm.truckers.truckersfmPlugin.enums.MessageType;
-import fm.truckers.truckersfmPlugin.helpers.ErrorLogger;
-import net.kyori.adventure.text.Component;
+import fm.truckers.truckersfmPlugin.helpers.HttpRequestHelper;
 import org.bukkit.entity.Player;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.concurrent.CompletableFuture;
 
 public class CompetitionCommand extends AbstractCommand {
     public void register(TruckersfmPlugin plugin) {
@@ -41,18 +38,6 @@ public class CompetitionCommand extends AbstractCommand {
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .build();
 
-        CompletableFuture.runAsync(() -> {
-            try {
-                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                if (response.statusCode() != 200) {
-                    player.sendMessage(Component.text("Failed to send request. HTTP Status: " + response.statusCode()));
-                    return;
-                }
-
-                player.sendMessage(Component.text("Your competition answer has been sent successfully!"));
-            } catch (Exception e) {
-                ErrorLogger.log(plugin, player, e);
-            }
-        });
+        HttpRequestHelper.sendRequestAndHandleResponse(client, request, player, plugin);
     }
 }
