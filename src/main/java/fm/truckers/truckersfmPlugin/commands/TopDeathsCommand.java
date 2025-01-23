@@ -26,7 +26,7 @@ public class TopDeathsCommand extends AbstractCommand {
     protected void handleCommand(Player player, CommandArguments args) {
         // Fetch all online players and sort them by deaths
         List<Player> topPlayers = Bukkit.getOnlinePlayers().stream()
-                .filter(onlinePlayer -> onlinePlayer.getStatistic(Statistic.DEATHS) > 0) // Only include players with at least 1 death
+                .filter(onlinePlayer -> onlinePlayer.getStatistic(Statistic.PLAY_ONE_MINUTE) > 0) // Only include players with at least 1 death
                 .sorted(Comparator.comparingInt((Player p) -> p.getStatistic(Statistic.DEATHS)).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
