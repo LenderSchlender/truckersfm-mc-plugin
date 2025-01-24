@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'fm.truckers'
-version = '0.5.0'
+version = '0.5.1'
 
 repositories {
     mavenCentral()
@@ -20,11 +20,16 @@ repositories {
     maven {
         url = "https://repo.codemc.org/repository/maven-public/"
     }
+    maven {
+        name "essentialsx-releases"
+        url "https://repo.essentialsx.net/releases/"
+    }
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
     compileOnly "dev.jorel:commandapi-bukkit-core:9.7.0"
+    compileOnly 'net.essentialsx:EssentialsX:2.20.1'
     implementation 'org.json:json:+'
     implementation "dev.jorel:commandapi-bukkit-shade:9.7.0"
 }
@@ -53,6 +58,8 @@ tasks {
         downloadPlugins {
             // Install the CommandAPI plugin on the server.
             modrinth("commandapi", "9.7.0")
+            // Install the EssentialsX plugin on the server.
+            modrinth("essentialsx", "2.20.1")
         }
     }
 }

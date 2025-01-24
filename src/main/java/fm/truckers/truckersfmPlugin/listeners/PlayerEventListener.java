@@ -1,6 +1,8 @@
 package fm.truckers.truckersfmPlugin.listeners;
 
+import com.earth2me.essentials.Essentials;
 import fm.truckers.truckersfmPlugin.TruckersfmPlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,6 +21,15 @@ public class PlayerEventListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (hiddenPlayers.contains(event.getPlayer().getUniqueId().toString())) {
             event.joinMessage(null); // Hide the message
+
+            Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+            if (essentials != null) {
+                try {
+                    essentials.getUser(event.getPlayer()).setVanished(true);
+                } catch (Exception e) {
+                    Bukkit.getLogger().severe("Failed to vanish player " + event.getPlayer().getName() + " (on join): " + e.getMessage());
+                }
+            }
         }
     }
 
