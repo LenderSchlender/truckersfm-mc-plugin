@@ -47,9 +47,13 @@ public class PlayerEventListener implements Listener {
 
     @EventHandler
     public void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event) {
-        if (hiddenPlayers.contains(event.getPlayer().getUniqueId().toString())) {
-            event.message(null); // Hide the message
+        // If the player isn't hidden, do nothing
+        // this means the advancement notification will proceed as usual
+        if (!hiddenPlayers.contains(event.getPlayer().getUniqueId().toString())) {
+            return;
         }
+
+        event.message(null); // Hide the message
 
         // Get the advancement name (display title)
         Advancement advancement = event.getAdvancement();

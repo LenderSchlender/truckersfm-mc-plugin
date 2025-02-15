@@ -26,13 +26,22 @@ public class TopDeathsCommand extends AbstractCommand {
     protected void handleCommand(Player player, CommandArguments args) {
         // Fetch all online players and sort them by deaths
         List<Player> topPlayers = Bukkit.getOnlinePlayers().stream()
-                .filter(onlinePlayer -> onlinePlayer.getStatistic(Statistic.PLAY_ONE_MINUTE) > 0) // Only include players with at least 1 death
+                .filter(onlinePlayer -> onlinePlayer.getStatistic(Statistic.DEATHS) > 0) // Only include players with at least 1 death
                 .sorted(Comparator.comparingInt((Player p) -> p.getStatistic(Statistic.DEATHS)).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
 
+        if (topPlayers.isEmpty()) {
+            // this should be pretty rare
+            Component noDeathsMsg = Component.text("Wow, nobody who is online right now has ever died before!", NamedTextColor.GOLD)
+                    .append(Component.newline())
+                    .append(Component.text("Incredible Job!", NamedTextColor.GREEN));
+            player.sendMessage(noDeathsMsg);
+            return;
+        }
+
         // Build the leaderboard message
-        Component leaderboard = Component.text("Top 10 players by deaths", NamedTextColor.GOLD).append(Component.newline());
+        Component leaderboard = Component.text("Top 10 online players by deaths", NamedTextColor.GOLD).append(Component.newline());
         int rank = 1;
         for (Player topPlayer : topPlayers) {
             leaderboard = leaderboard.append(
